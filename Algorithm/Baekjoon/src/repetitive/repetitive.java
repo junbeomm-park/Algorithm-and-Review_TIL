@@ -11,6 +11,7 @@ public class repetitive {
 		for (int i = 1; i <= t ; i++) {
 			int a = sc.nextInt();
 			int b = sc.nextInt();
+			
 			System.out.println(a+b);
 		}
 	}
