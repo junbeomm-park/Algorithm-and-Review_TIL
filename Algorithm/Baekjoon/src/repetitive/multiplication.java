@@ -12,5 +12,5 @@ public class multiplication {
 			System.out.println(a+"*"+i+"="+a*i);
 		}
 	}
-
+	
 }
