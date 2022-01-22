@@ -15,6 +15,7 @@ public class basic_1020 {
 		String a1 = code[0].toString();
 		String a2 = String.valueOf(code[1]);
 		
+		
 		System.out.println(a1+a2);
 	}
 }

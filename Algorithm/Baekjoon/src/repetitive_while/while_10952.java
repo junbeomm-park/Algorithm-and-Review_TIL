@@ -1,7 +1,6 @@
 package repetitive_while;
 
 import java.util.Scanner;
-import java.lang.IllegalArgumentException;
 
 public class while_10952 {
 	public static void main(String[] args) {
