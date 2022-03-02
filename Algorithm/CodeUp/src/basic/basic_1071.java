@@ -13,7 +13,6 @@ public class basic_1071 {
 			if(a == 0) {
 				return;
 			}
-			
 			System.out.println(a);
 		}
 	}
