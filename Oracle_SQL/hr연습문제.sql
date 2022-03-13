@@ -1,0 +1,163 @@
+-- 3. 연봉이 5000 에서 12000의 범위 이외인 사람들의 LAST_NAME 및 연봉을 조회힌다.
+SELECT LAST_NAME, SALARY FROM EMPLOYEES
+WHERE SALARY BETWEEN 5000 AND 12000;
+-- 4. 1998/02/20 일부터 1998/05/01 사이에 고용된 사원들의 LAST_NAME 사번, 고용일자를 조회한다.
+--    고용일자 순으로 정렬한다.
+SELECT LAST_NAME, EMPLOYEE_ID, HIRE_DATE
+FROM EMPLOYEES
+WHERE HIRE_DATE BETWEEN '80/02/20' AND '08/05/01'
+ORDER BY HIRE_DATE;
+-- 5. 20 번 및 50 번 부서에서 근무하는 모든 사원들의 LAST_NAME 및 부서 번호를 알파벳순으로 조회한다.
+SELECT LAST_NAME, DEPARTMENT_ID
+FROM EMPLOYEES
+WHERE DEPARTMENT_ID = 20 
+OR DEPARTMENT_ID = 30;
+
+-- 6. 20 번 및 50 번 부서에 근무하며, 연봉이 5000 ~ 12,000 사이인 사원들의 LAST_NAME 및 연봉을 조회한다.
+SELECT LAST_NAME, SALARY
+FROM EMPLOYEES
+WHERE DEPARTMENT_ID = 20
+OR DEPARTMENT_ID = 30
+AND SALARY BETWEEN 5000 AND 12000;
+
+-- 7. 1994년도에 고용된 모든 사람들의 LAST_NAME 및 고용일을 조회한다.
+SELECT LAST_NAME, HIRE_DATE
+FROM EMPLOYEES
+WHERE HIRE_DATE BETWEEN '04/01/01' AND '04/12/31';
+-- 8-1. 매니저가 없는 사람들의 LAST_NAME 및 JOB_ID 를 조회한다.
+SELECT LAST_NAME, JOB_ID
+FROM EMPLOYEES
+WHERE MANAGER_ID IS NULL;
+-- 8-2. 매니저가 있는 사람들의 LAST_NAME 및 JOB_ID 를 조회한다.
+SELECT LAST_NAME, JOB_ID
+FROM EMPLOYEES
+WHERE MANAGER_ID IS NOT NULL;
+
+-- 9. 커미션을 버는 모든 사원들의 LAST_ANME, 연봉 및 커미션을 조회한다.
+--    연봉 역순, 커미션 역순차로 정렬한다.
+SELECT LAST_NAME, SALARY, COMMISSION_PCT
+FROM EMPLOYEES
+WHERE COMMISSION_PCT IS NOT NULL
+ORDER BY SALARY DESC, COMMISSION_PCT;
+
+
+-- 10. LAST_NAME 의 네번째 글자가 a 인 사원들의 LAST_NAME 을 조회한다.
+SELECT LAST_NAME 
+FROM EMPLOYEES
+WHERE LAST_NAME LIKE '___a%';
+
+-- 11. LAST_NAME 에 a 및(OR) e 글자가 있는 사원들의 LAST_NAME 을 조회한다.
+SELECT LAST_NAME
+FROM EMPLOYEES
+WHERE LAST_NAME LIKE '%a%'
+OR  LAST_NAME LIKE '%b%';
+
+-- 12. 연봉이 2,500, 3,500, 7000 이 아니며 직업이 SA_REP 이나 ST_CLERK 인 사람들을 조회한다.
+SELECT LAST_NAME, SALARY, JOB_ID
+FROM EMPLOYEES
+WHERE SALARY NOT IN (2500, 3500, 7000)
+AND JOB_ID = 'SA_MAN'
+OR JOB_ID = 'ST_CLERK';
+
+-- 13  직업이 AD_PRESS 인 사람은 A 등급을, ST_MAN 인 사람은 B 등급을, IT_PROG 인 사람은 C 등급을,
+--          SA_REP 인 사람은 D 등급을, ST_CLERK 인 사람은 E 등급을 기타는 0 을 부여하여 조회한다.
+
+SELECT LAST_NAME, DECODE(JOB_ID, 'AD_PRESS', 'A',
+                                                'ST_MAN','B',
+                                                'IT_PROG','C',
+                                                'SA_REP','D',
+                                                'ST_CLERK','E',
+                                                '0') 
+FROM EMPLOYEES;
+
+
+SELECT LAST_NAME, CASE JOB_ID 
+                                    WHEN 'AD_PRESS' THEN 'A'
+                                    WHEN 'ST_MAN' THEN 'B'
+                                    WHEN 'IT_PROG' THEN 'C'
+                                    WHEN 'SA_REP' THEN 'D'
+                                    WHEN 'ST_CLERK' THEN 'E'
+                                    ELSE '0'
+                            END
+FROM EMPLOYEES;
+
+
+-- 14. 모든 사원들의 LAST_NAME, 부서 이름 및 부서 번호을 조회한다.
+SELECT E.LAST_NAME, D.DEPARTMENT_NAME, E.DEPARTMENT_ID
+FROM EMPLOYEES E JOIN DEPARTMENTS D
+ON E.DEPARTMENT_ID = D.DEPARTMENT_ID;
+
+-- 15. 부서번호 30 내의 모든 직업들을 유일한 포맷으로 조회한다. 90 부서 또한 포함한다.
+SELECT DISTINCT JOB_ID,DEPARTMENT_ID
+FROM EMPLOYEES
+WHERE DEPARTMENT_ID IN (30, 90);
+
+-- 16. 커미션을 버는 모든 사람들의 LAST_NAME, 부서 명, 지역 ID 및 도시 명을 조회한다.
+SELECT E.LAST_NAME, D.DEPARTMENT_NAME, L.LOCATION_ID, L.CITY
+FROM EMPLOYEES E JOIN DEPARTMENTS D
+ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+JOIN LOCATIONS L
+ON D.LOCATION_ID = L.LOCATION_ID
+WHERE COMMISSION_PCT IS NOT NULL;
+
+SELECT E.LAST_NAME, D.DEPARTMENT_NAME, L.LOCATION_ID, L.CITY
+FROM EMPLOYEES E, DEPARTMENTS D, LOCATIONS L
+WHERE E.DEPARTMENT_ID = D.DEPARTMENT_ID
+AND D.LOCATION_ID = L.LOCATION_ID
+AND COMMISSION_PCT IS NOT NULL;
+
+-- 16. 시애틀에 사는 사람 중 커미션을 버는 모든 사람들의 LAST_NAME, 부서 명, 지역 ID 및 도시 명을 조회한다.
+SELECT E.LAST_NAME, D.DEPARTMENT_NAME, L.LOCATION_ID, L.CITY
+FROM EMPLOYEES E JOIN DEPARTMENTS D
+ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+JOIN LOCATIONS L
+ON D.LOCATION_ID = L.LOCATION_ID
+WHERE COMMISSION_PCT IS NOT NULL
+AND CITY = 'Seattle';
+-- 17. LAST_NAME 이 DAVIES 인 사람보다 후에 고용된 사원들의 LAST_NAME 및 HIRE_DATE 을 조회한다.
+SELECT LAST_NAME, HIRE_DATE
+FROM EMPLOYEES
+WHERE HIRE_DATE < (SELECT HIRE_DATE
+FROM EMPLOYEES
+WHERE LAST_NAME = 'Davies');
+
+
+-- 18. 자신의 매니저보다 먼저 고용된 사원들의 LAST_NAME 및 고용일을 조회한다.
+SELECT E.LAST_NAME, E.HIRE_DATE
+FROM EMPLOYEES E, EMPLOYEES E2
+WHERE E.MANAGER_ID = E2.EMPLOYEE_ID
+AND E.HIRE_DATE < E2.HIRE_DATE;
+-- 19. 회사 전체의 최대 연봉, 최소 연봉, 연봉 총 합 및 평균 연봉을 자연수로 포맷하여 조회한다.
+SELECT MAX(SALARY), MIN(SALARY), SUM(SALARY), ROUND(AVG(SALARY), 0)
+FROM EMPLOYEES;
+
+-- 20. 각 JOB_ID 별, 최대 연봉, 최소 연봉, 연봉 총 합 및 평균 연봉을 자연수로 포맷하여 조회한다.
+SELECT JOB_ID, MAX(SALARY), MIN(SALARY), SUM(SALARY), AVG(SALARY)
+FROM EMPLOYEES
+GROUP BY JOB_ID;
+
+-- 21. 동일한 직업을 가진 사원들의 총 수를 조회한다.
+SELECT JOB_ID, COUNT(JOB_ID)
+FROM EMPLOYEES
+GROUP BY JOB_ID;
+
+-- 22. 매니저로 근무하는 사원들의 총 수를 조회한다.
+SELECT MANAGER_ID, COUNT(DISTINCT MANAGER_ID)
+FROM EMPLOYEES
+GROUP BY MANAGER_ID
+HAVING MANAGER_ID IS NOT NULL;
+
+-- 23. 사내의 최대 연봉 및 최소 연봉의 차이를 조회한다.
+SELECT MAX(SALARY), MIN(SALARY), MAX(SALARY) - MIN(SALARY) AS 차이
+FROM EMPLOYEES;
+
+-- 24. 매니저의 사번 및 그 매니저 밑 사원들 중 최소 연봉을 받는 사원의 연봉을 조회한다.
+--     매니저가 없는 사람들은 제외한다.
+--     최소 연봉이 6000 미만인 경우는 제외한다.
+--     연봉 기준 역순으로 조회한다.
+SELECT MANAGER_ID, MIN(SALARY), LAST_NAME
+FROM EMPLOYEES
+WHERE MANAGER_ID IS NOT NULL
+GROUP BY LAST_NAME, MANAGER_ID
+HAVING MIN(SALARY) < 6000
+ORDER BY MIN(SALARY) DESC;
