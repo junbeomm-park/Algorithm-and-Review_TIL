@@ -190,7 +190,7 @@ FROM DUAL;
 
 
 
-
+-- 27.  각 부서별 각 직업 별 연봉 총 합 및 각 부서별 연봉 총 합을 조회한다. 
 SELECT JOB_ID, 
             (SELECT SUM(SALARY)
             FROM EMPLOYEES E1
@@ -200,6 +200,26 @@ SELECT JOB_ID,
 FROM EMPLOYEES E
 GROUP BY E.JOB_ID, JOB_ID;
 
+-- 28. LAST_NAME 이 Zlotkey 와 동일한 부서에 근무하는 모든 사원들의 사번 및 고용날짜를 조회한다.
+--     결과값에서 Zlotkey 는 제외한다.
+SELECT EMPLOYEE_ID, HIRE_DATE
+FROM EMPLOYEES
+WHERE DEPARTMENT_ID = (SELECT DEPARTMENT_ID
+FROM EMPLOYEES
+WHERE LAST_NAME  = 'Zlotkey');
+
+-- 29. 회사 전체 평균 연봉보다 더 받는 사원들의 사번 및 LAST_NAME 을 조회한다.
+SELECT EMPLOYEE_ID, LAST_NAME, SALARY
+FROM EMPLOYEES
+WHERE SALARY > (SELECT AVG(SALARY)
+FROM EMPLOYEES);
+
+-- 30-1. LAST_NAME 에 u 가 포함되는 사원들과 동일 부서에 근무하는 사원들의 사번 및 LAST_NAME 을 조회한다.
+SELECT EMPLOYEE_ID, LAST_NAME
+FROM EMPLOYEES
+WHERE DEPARTMENT_ID  IN (SELECT DEPARTMENT_ID
+FROM EMPLOYEES
+WHERE LAST_NAME LIKE ('%u%'));
 
 
 
