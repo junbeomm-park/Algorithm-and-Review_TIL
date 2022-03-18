@@ -243,6 +243,25 @@ FROM EMPLOYEES E , DEPARTMENTS D
 WHERE DEPARTMENT_NAME = 'Executive'
 AND E.DEPARTMENT_ID = D.DEPARTMENT_ID;
 
+-- 34. 회사 전체 평균 연봉 보다 더 버는 사원들 중 LAST_NAME 에 u 가 있는 사원들이
+--       근무하는 부서에서 근무하는 사원들의 사번, LAST_NAME 및 연봉을 조회한다.
+
+SELECT EMPLOYEE_ID, LAST_NAME, SALARY
+FROM EMPLOYEES
+WHERE DEPARTMENT_ID IN (SELECT DEPARTMENT_ID
+                                FROM EMPLOYEES
+                                WHERE LAST_NAME LIKE ('%u%'))
+AND SALARY > (SELECT AVG(SALARY)
+                        FROM EMPLOYEES);
+
+-- 35. ST_CLERK 인 직업 ID 를 가진 사원이 없는 부서 ID 를 조회한다.                 
+SELECT DEPARTMENT_ID
+FROM EMPLOYEES E
+WHERE NOT EXISTS (SELECT * FROM EMPLOYEES E2 WHERE E.DEPARTMENT_ID = E2.DEPARTMENT_ID AND JOB_ID = 'ST_CLERK')
+AND DEPARTMENT_ID IS NOT NULL;
+
+
+
 
 
 
