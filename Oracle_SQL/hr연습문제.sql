@@ -262,6 +262,15 @@ AND DEPARTMENT_ID IS NOT NULL;
 
 
 
+-- 36. 위치한 부서가 없는 국가 ID 및 국가 이름을 조회힌다.(NOT EXISTS 사용)                         
+SELECT COUNTRY_ID, COUNTRY_NAME
+FROM COUNTRIES C
+WHERE C.COUNTRY_ID IN (SELECT COUNTRY_ID
+                                        FROM LOCATIONS L
+                                        WHERE NOT EXISTS (SELECT * FROM DEPARTMENTS D
+                                              WHERE L.LOCATION_ID = D.LOCATION_ID));
+
+
 
 
 
