@@ -15,11 +15,7 @@ public class basic_1098 {
 			for(int j = 0; j < arr.length; j++) {
 				arr[i][j] = 0;
 				
-				if(d == 0) {
-					i = 1;
-				}else if(d == 1){
-					j = 1;
-				}
+				
 				System.out.print(arr[i][j] + " ");
 			}
 			System.out.println();
