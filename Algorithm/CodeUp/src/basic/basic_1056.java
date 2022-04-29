@@ -10,7 +10,11 @@ public class basic_1056 {
 		int a = sc.nextInt();
 		int b = sc.nextInt();
 		
-		int answer = 0;
+		if((a==1 && b==0) || (a==0 && b==1)) {
+			System.out.println(1);
+		}else {
+			System.out.println(0);
+		}
 		
 	}
 
